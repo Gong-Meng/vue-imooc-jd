@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px;
+            padding: 0px;
+        }
+        .box{
+            display: flex;
+            /* 项目沿着主轴起点开始排列 */
+            /* justify-content: flex-start;  */
+            /* 项目沿着主轴终点开始排列 */
+            /* justify-content: flex-end; */
+            /* 项目沿着主轴中心点开始排列 */
+            /* justify-content: center; */
+            /* 项目在主轴两端对齐 ，同时保持相同的间距*/
+            /* justify-content: space-between; */
+            /* 所有的项目两侧间距相等*/
+            justify-content: space-around;
+        }
+        .sub{
+            background-color: black;
+            color: white;
+            font-size: 21px;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            border: 5px solid brown;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="sub">1</div>
+        <div class="sub">2</div>
+        <div class="sub">3</div>
+        <div class="sub">4</div>
+    </div>
+</body>
+</html>
