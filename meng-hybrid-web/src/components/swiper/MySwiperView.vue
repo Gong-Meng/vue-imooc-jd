@@ -38,11 +38,34 @@ export default {
         // 自动滚动
         autoplay: true,
         // 自动高度，让 siwper 的高度跟随 slide 的高度变化
-        autoHeight: true
+        autoHeight: true,
+        pagination: {
+          el: '.swiper-pagination',
+          // 分页器样式
+          type: 'bullets',
+          bulletClass: 'custom-bullet-class'
+        }
       }
     }
   }
 }
 </script>
-<style>
+<style lang="scss">
+@import '@css/style.scss';
+.swiper-pagination{
+  bottom: px2rem(123);
+  .custom-bullet-class{
+    box-sizing: border-box;
+    border-radius: 100%;
+    height: px2rem(6);
+    width: px2rem(6);
+    border: px2rem(1) solid #fff;
+    margin: 0 px2rem(4);
+    display: inline-block;
+    opacity: 1;
+  }
+  .swiper-pagination-bullet-active{
+    background-color: #fff;
+  }
+}
 </style>
