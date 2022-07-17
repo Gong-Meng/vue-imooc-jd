@@ -7,3 +7,5 @@ $rootFontSize: math.div(375, 10);
 @function px2rem ($px) {
     @return calc($px / $rootFontSize) + rem;
 }
+
+$infoSize: px2rem(14);

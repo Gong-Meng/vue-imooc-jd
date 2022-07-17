@@ -1,5 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
-const path = require("path")
+const path = require('path')
 
 module.exports = defineConfig({
   transpileDependencies: true,
@@ -13,7 +13,7 @@ module.exports = defineConfig({
           alias: {
             '@js': path.resolve(__dirname, './src/assets/js'),
             '@css': path.resolve(__dirname, './src/assets/css'),
-            '@imgs': path.resolve(__dirname, './src/assets/imgs'),
+            '@img': path.resolve(__dirname, './src/assets/imgs'),
             '@c': path.resolve(__dirname, './src/components')
           }
         }
