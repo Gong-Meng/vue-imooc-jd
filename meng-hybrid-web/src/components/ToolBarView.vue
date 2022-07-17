@@ -75,6 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@css/style.scss';
 .tool-bar{
     width: 100%;
     height: px2rem(46);
