@@ -3,12 +3,14 @@
     <div class="home-content">
       <!-- swiper -->
       <my-swiper :swiper-imgs="swiperData.map(item => item.icon)" :height="swiperHeight"></my-swiper>
-      <!-- activity -->
+      <!-- activity 520活动 -->
       <activity>
           <div class="activity-520">
             <img v-for="(item, index) in activityDatas" :key="index" :src="item.icon" alt="">
           </div>
       </activity>
+      <!-- mode-options 功能选项 -->
+      <mode-options></mode-options>
     </div>
   </div>
 </template>
@@ -16,10 +18,12 @@
 <script>
 import MySwiper from '@c/swiper/MySwiperView.vue'
 import Activity from '@c/currency/ActivityView.vue'
+import ModeOptions from '@c/currency/ModeOptionsView.vue'
 export default {
   components: {
     MySwiper,
-    Activity
+    Activity,
+    ModeOptions
   },
   data () {
     return {
