@@ -34,19 +34,28 @@ export default {
   methods: {
     // 获取数据
     initData () {
-      // 获取顶部轮播图片
-      this.$http.get('/swiper').then(data => {
-        this.swiperData = data.list
-      }).catch(err => {
-        console.log(err)
-      })
+      // // 获取顶部轮播图片
+      // this.$http.get('/swiper').then(data => {
+      //   this.swiperData = data.list
+      // }).catch(err => {
+      //   console.log(err)
+      // })
 
-      // 获取活动信息
-      this.$http.get('/activitys').then(data => {
-        this.activityDatas = data.list
-      }).catch(err => {
-        console.log(err)
-      })
+      // // 获取活动信息
+      // this.$http.get('/activitys').then(data => {
+      //   this.activityDatas = data.list
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+
+      // axios 同事发送多个请求（并行）
+      this.$http.all([
+        this.$http.get('/swiper'),
+        this.$http.get('/activitys')
+      ]).then(this.$http.spread((swiperData, activityData) => {
+        this.swiperData = swiperData.list
+        this.activityDatas = activityData.list
+      }))
     }
   }
 }
