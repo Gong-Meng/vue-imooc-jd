@@ -11,6 +11,8 @@
       </activity>
       <!-- mode-options 功能选项 -->
       <mode-options></mode-options>
+      <!-- 秒杀模块 -->
+      <seconds :data-source="secondsDatas"></seconds>
     </div>
   </div>
 </template>
@@ -19,17 +21,20 @@
 import MySwiper from '@c/swiper/MySwiperView.vue'
 import Activity from '@c/currency/ActivityView.vue'
 import ModeOptions from '@c/currency/ModeOptionsView.vue'
+import Seconds from '@c/seconds/SecondsView.vue'
 export default {
   components: {
     MySwiper,
     Activity,
-    ModeOptions
+    ModeOptions,
+    Seconds
   },
   data () {
     return {
       swiperData: [],
       swiperHeight: '184px',
-      activityDatas: []
+      activityDatas: [],
+      secondsDatas: []
     }
   },
   created () {
@@ -55,10 +60,13 @@ export default {
       // axios 同事发送多个请求（并行）
       this.$http.all([
         this.$http.get('/swiper'),
-        this.$http.get('/activitys')
-      ]).then(this.$http.spread((swiperData, activityData) => {
+        this.$http.get('/activitys'),
+        this.$http.get('/seconds')
+      ]).then(this.$http.spread((swiperData, activityData, secondsData) => {
         this.swiperData = swiperData.list
         this.activityDatas = activityData.list
+        this.secondsDatas = secondsData.list
+        console.log(secondsData)
       }))
     }
   }

@@ -8,5 +8,8 @@ $rootFontSize: math.div(375, 10);
     @return calc($px / $rootFontSize) + rem;
 }
 
+$titleSize: px2rem(16);
 $infoSize: px2rem(14);
 $minInfoSize: px2rem(12);
+$radiusSize: px2rem(6);
+$marginSize: px2rem(8);
