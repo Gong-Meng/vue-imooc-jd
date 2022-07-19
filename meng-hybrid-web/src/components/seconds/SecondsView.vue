@@ -10,7 +10,7 @@
         <div class="seconds-content-item" v-for="(item, index) in dataSource" :key="index">
           <img  class="seconds-content-item-icon" :src="item.icon" alt="">
           <p class="seconds-content-item-price">￥{{item.price}}</p>
-          <p class="seconds-content-item-old-price">%{{item.oldPrice}}</p>
+          <p class="seconds-content-item-old-price">￥{{item.oldPrice}}</p>
         </div>
     </div>
   </div>
