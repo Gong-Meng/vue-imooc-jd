@@ -5,6 +5,7 @@
           京东秒杀
         </p>
         <!-- 倒计时模块组件 -->
+        <count-down></count-down>
     </div>
     <div class="seconds-content">
         <div class="seconds-content-item" v-for="(item, index) in dataSource" :key="index">
@@ -16,6 +17,7 @@
   </div>
 </template>
 <script>
+import CountDown from './CountDownView.vue'
 export default {
   props: {
     dataSource: {
@@ -25,6 +27,9 @@ export default {
         return []
       }
     }
+  },
+  components: {
+    CountDown
   },
   data () {
     return {
