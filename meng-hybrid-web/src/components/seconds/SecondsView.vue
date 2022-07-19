@@ -5,7 +5,7 @@
           京东秒杀
         </p>
         <!-- 倒计时模块组件 -->
-        <count-down></count-down>
+        <count-down :end-hours="20"></count-down>
     </div>
     <div class="seconds-content">
         <div class="seconds-content-item" v-for="(item, index) in dataSource" :key="index">
