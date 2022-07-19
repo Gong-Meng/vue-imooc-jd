@@ -5,8 +5,8 @@
     2、生成不同高度的图片，撑起不同高度的item
     3、计算 item 的位置，来达到 从上到下，从左到右依次排列的目的
    -->
-  <div class="goods goods-waterfall">
-    <div class="goods-item goods-waterfall-item" v-for="(item,index) in dataSource" :key="index">
+  <div class="goods goods-waterfall" :style="{height: goodsViewHeight}">
+    <div class="goods-item goods-waterfall-item" ref="goodsItem" v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
       <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
       <!-- desc 详情描述 -->
@@ -35,7 +35,13 @@ export default {
       // 最小高度
       MIN_IMG_HEIGHT: 178,
       // 图片样式集合
-      imgStyles: []
+      imgStyles: [],
+      // item margin
+      ITEM_MARGIN_SIZE: 8,
+      // item 样式集合
+      goodsItemStyles: [],
+      // goods 组件高度
+      goodsViewHeight: 0
     }
   },
   created () {
@@ -49,6 +55,10 @@ export default {
       this.$http.get('/goods').then(data => {
         this.dataSource = data.list
         this.initItemStyles()
+        // 调用创建瀑布流的方法 等到dom 创建完成之后
+        this.$nextTick(() => {
+          this.initWaterFall()
+        })
       })
     },
     /**
@@ -70,6 +80,53 @@ export default {
           height: imgHeight
         })
       })
+    },
+    /**
+     * 瀑布流布局
+     * 1、获取到所有的 item 元素
+     * 2、遍历 item 元素，得到每一个item的高度，加上一个 margin 的高度
+     * 3、创建两个变量：leftHeightTotal, rightHeightTotal 分别表示左右两侧目前距离顶部的高度
+     *  通过对比左右两侧距离顶部的高度，来确定 item 的放置位置
+     *  如果左侧小于右侧高度的话，那么item就应该放置于左侧，此时item距离左侧为0，距离顶部为leftHeightTotal
+     *  否则，item 应该放置到右侧，此时 item 距离右侧为 0 , 距离顶部为当前的rightHeightTotal
+     * 4、保存计算出的item的所有样式，配置到item上
+     * 5、item配置完成之后，对比左右两侧最大的高度，最大的高度为goods 组件的高度
+     */
+    initWaterFall () {
+      // 1、获取到所有的 item 元素
+      const $goodsItems = this.$refs.goodsItem
+      if (!$goodsItems) return
+
+      // 左右两侧距离顶部的高度
+      let leftHeightTotal = 0
+      let rightHeightTotal = 0
+      $goodsItems.forEach(($el, index) => {
+        // item样式
+        let goodsItemStyle = {}
+        // 2、遍历 item 元素，得到每一个item的高度，加上一个 margin 的高度
+        const elHeight = $el.clientHeight + this.ITEM_MARGIN_SIZE
+        // 对比左右两侧距离顶部的高度
+        if (leftHeightTotal <= rightHeightTotal) {
+          goodsItemStyle = {
+            left: '0px',
+            top: leftHeightTotal + 'px'
+          }
+          // 更新左侧距离顶部的高度
+          leftHeightTotal += elHeight
+        } else {
+          goodsItemStyle = {
+            right: '0px',
+            top: rightHeightTotal + 'px'
+          }
+          rightHeightTotal += elHeight
+        }
+
+        // 4、保存计算出的item的所有样式，配置到item上
+        this.goodsItemStyles.push(goodsItemStyle)
+      })
+
+      // 对比左右两侧最大的高度，最大的高度为goods 组件的高度
+      this.goodsViewHeight = (leftHeightTotal > rightHeightTotal ? leftHeightTotal : rightHeightTotal) + 'px'
     }
   }
 }
