@@ -13,6 +13,12 @@
       <mode-options></mode-options>
       <!-- 秒杀模块 -->
       <seconds :data-source="secondsDatas"></seconds>
+      <!-- 拼购节 -->
+      <activity>
+        <div class="activity-pin-gou-jie">
+          <img src="@img/haoHuoQiang.gif" alt="">
+        </div>
+      </activity>
     </div>
   </div>
 </template>
@@ -66,7 +72,6 @@ export default {
         this.swiperData = swiperData.list
         this.activityDatas = activityData.list
         this.secondsDatas = secondsData.list
-        console.log(secondsData)
       }))
     }
   }
@@ -79,6 +84,8 @@ export default {
   width: 100%;
   height: 100%;
   background-color: $bgColor;
+  overflow: hidden;
+  overflow-y: auto; //垂直方向滚动
 
   &-content {
     height: 100%;
@@ -91,6 +98,15 @@ export default {
       img{
         display: inline-block;
         width: 33.33%;
+      }
+    }
+
+    .activity-pin-gou-jie{
+      background-color: white;
+      margin-top: $marginSize;
+
+      img{
+        width: 100%;
       }
     }
   }
