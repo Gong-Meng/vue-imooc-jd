@@ -4,7 +4,7 @@
       {{endHours}}点场
     </span>
     <span class="count-down-surplus">
-      {{surplus}}
+      {{surplus | filterTime}}
     </span>
   </div>
 </template>
