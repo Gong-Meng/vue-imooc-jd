@@ -8,7 +8,7 @@
   <div class="goods goods-waterfall">
     <div class="goods-item goods-waterfall-item" v-for="(item,index) in dataSource" :key="index">
       <!-- 图片 -->
-      <img :src="item.img" alt="" class="goods-item-img">
+      <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
       <!-- desc 详情描述 -->
       <div class="goods-item-desc">
           <p class="goods-item-desc-name">
@@ -29,7 +29,13 @@ export default {
   data () {
     return {
       // 数据源
-      dataSource: []
+      dataSource: [],
+      // 最大高度
+      MAX_IMG_HEIGHT: 230,
+      // 最小高度
+      MIN_IMG_HEIGHT: 178,
+      // 图片样式集合
+      imgStyles: []
     }
   },
   created () {
@@ -42,6 +48,27 @@ export default {
     initData () {
       this.$http.get('/goods').then(data => {
         this.dataSource = data.list
+        this.initItemStyles()
+      })
+    },
+    /**
+     * 返回随机的图片高度
+     */
+    imgHeight () {
+      // Math.random() -> 0 - 1 随机数 * (高度区间) + 最低的图片高度
+      return Math.floor(Math.random() * (this.MAX_IMG_HEIGHT - this.MIN_IMG_HEIGHT) + this.MIN_IMG_HEIGHT)
+    },
+    /**
+     * 根据随机的图片高度，生成对应的图片样式数据
+     */
+    initItemStyles () {
+      this.dataSource.forEach(item => {
+        // 随机生成的图片高度
+        const imgHeight = this.imgHeight() + 'px'
+        // Push 图片高度到img样式集合
+        this.imgStyles.push({
+          height: imgHeight
+        })
       })
     }
   }
