@@ -19,6 +19,8 @@
           <img src="@img/haoHuoQiang.gif" alt="">
         </div>
       </activity>
+      <!-- 商品列表 -->
+      <goods></goods>
     </div>
   </div>
 </template>
@@ -28,12 +30,14 @@ import MySwiper from '@c/swiper/MySwiperView.vue'
 import Activity from '@c/currency/ActivityView.vue'
 import ModeOptions from '@c/currency/ModeOptionsView.vue'
 import Seconds from '@c/seconds/SecondsView.vue'
+import Goods from '@c/goods/GoodsView.vue'
 export default {
   components: {
     MySwiper,
     Activity,
     ModeOptions,
-    Seconds
+    Seconds,
+    Goods
   },
   data () {
     return {
