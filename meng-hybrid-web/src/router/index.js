@@ -9,15 +9,17 @@ const routes = [
     path: '/',
     name: 'home',
     component: MainView
+  },
+  {
+    path: '/goodsList',
+    name: 'goodsList',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    // vue-router 懒加载 -> 只有在使用的时候才会去加载 GoodsList
+    // chunkName -> GoodsList.[hash].js
+    component: () => import(/* webpackChunkName: "GoodsList" */ '../views/GoodsListView.vue')
   }
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  // }
 ]
 
 const router = new VueRouter({

@@ -1,6 +1,8 @@
 <template>
   <div class="mode-options">
-      <div class="mode-options-item" v-for="(item, index) in dataSource" :key="index">
+      <div class="mode-options-item" v-for="(item, index) in dataSource" :key="index"
+        @click="onItemClick(item)"
+      >
         <img class="mode-options-item-icon" :src="item.icon" alt="">
         <p class="mode-options-item-title">{{item.title}}</p>
       </div>
@@ -63,6 +65,13 @@ export default {
           title: '全部'
         }
       ]
+    }
+  },
+  methods: {
+    onItemClick () {
+      this.$router.push({
+        name: 'goodsList'
+      })
     }
   }
 }
