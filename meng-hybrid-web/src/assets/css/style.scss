@@ -11,3 +11,7 @@
   -webkit-box-orient: vertical; // 从顶部向底部垂直布置子元素
   display: -webkit-box; // 自适应内容显示
 }
+
+.z-index-max{
+  z-index: 99999;
+}

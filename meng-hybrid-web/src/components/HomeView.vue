@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <navigation-bar :page-name="'首页'"></navigation-bar>
     <div class="home-content">
       <!-- swiper -->
       <my-swiper :swiper-imgs="swiperData.map(item => item.icon)" :height="swiperHeight"></my-swiper>
@@ -31,13 +32,16 @@ import Activity from '@c/currency/ActivityView.vue'
 import ModeOptions from '@c/currency/ModeOptionsView.vue'
 import Seconds from '@c/seconds/SecondsView.vue'
 import Goods from '@c/goods/GoodsView.vue'
+import NavigationBar from '@c/currency/NavigationBarView.vue'
+
 export default {
   components: {
     MySwiper,
     Activity,
     ModeOptions,
     Seconds,
-    Goods
+    Goods,
+    NavigationBar
   },
   data () {
     return {
