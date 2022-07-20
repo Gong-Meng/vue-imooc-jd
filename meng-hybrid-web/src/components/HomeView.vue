@@ -7,7 +7,7 @@
         </template>
         <!-- 中间插槽 -->
         <template v-slot:nav-center>
-          <p style="font-size: 32px">中间插槽</p>
+          <search :icon="require('@img/search.svg')" :hint-color="'#999'" :bg-color="'#fff'"></search>
         </template>
         <!-- 右侧插槽 -->
         <template v-slot:nav-right>
@@ -46,6 +46,7 @@ import ModeOptions from '@c/currency/ModeOptionsView.vue'
 import Seconds from '@c/seconds/SecondsView.vue'
 import Goods from '@c/goods/GoodsView.vue'
 import NavigationBar from '@c/currency/NavigationBarView.vue'
+import Search from './currency/SearchView.vue'
 
 export default {
   components: {
@@ -54,7 +55,8 @@ export default {
     ModeOptions,
     Seconds,
     Goods,
-    NavigationBar
+    NavigationBar,
+    Search
   },
   data () {
     return {

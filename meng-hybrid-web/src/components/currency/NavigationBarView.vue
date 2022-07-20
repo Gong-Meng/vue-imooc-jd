@@ -76,6 +76,7 @@ export default {
   .center{
     display: flex;
     height: 100%;
+    flex-grow: 1; // 占用容器剩余的全部空间
 
     .page-title{
       font-size: $titleSize;
