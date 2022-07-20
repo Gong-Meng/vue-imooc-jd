@@ -10,14 +10,21 @@
     <div class="left">
       <!-- 默认状态 -->
       <img v-if="isShowBack" src="@img/back.svg" alt="">
+      <!-- 具名插槽 -->
+      <slot name="nav-left"></slot>
     </div>
     <!-- 中 -->
     <div class="center">
       <!-- 默认状态 -->
       <span class="page-title" v-if="pageName">{{pageName}}</span>
+      <!-- 具名插槽 -->
+      <slot name="nav-center"></slot>
     </div>
     <!-- 右 -->
-    <div class="right"></div>
+    <div class="right">
+      <!-- 具名插槽 -->
+      <slot name="nav-right"></slot>
+    </div>
   </div>
 </template>
 <script>

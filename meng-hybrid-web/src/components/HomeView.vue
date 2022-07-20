@@ -1,6 +1,19 @@
 <template>
   <div class="home">
-    <navigation-bar :page-name="'首页'"></navigation-bar>
+    <navigation-bar :is-show-back="false">
+        <!-- 左侧插槽 -->
+        <template v-slot:nav-left>
+            <img src="@img/more-white.svg" alt="">
+        </template>
+        <!-- 中间插槽 -->
+        <template v-slot:nav-center>
+          <p style="font-size: 32px">中间插槽</p>
+        </template>
+        <!-- 右侧插槽 -->
+        <template v-slot:nav-right>
+          <img src="@img/message-white.svg" alt="">
+        </template>
+    </navigation-bar>
     <div class="home-content">
       <!-- swiper -->
       <my-swiper :swiper-imgs="swiperData.map(item => item.icon)" :height="swiperHeight"></my-swiper>
