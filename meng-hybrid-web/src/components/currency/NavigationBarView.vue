@@ -5,7 +5,10 @@
     2、可通过插槽来配置具体的展示样式 -> 左，中，右 三个插槽，父组件可以通过插槽进行布局
     3、可以接收从外部指定的一个样式（可以在父组件中指定 navigationBar 的style）
    -->
-  <div class="nav-bar z-index-max" :class="{'bottom-line': pageName}">
+  <div class="nav-bar z-index-max"
+    :class="{'bottom-line': pageName}"
+    :style="navBarStyle"
+  >
     <!-- 左 -->
     <div class="left">
       <!-- 默认状态 -->
@@ -43,6 +46,17 @@ export default {
     isShowBack: {
       type: Boolean,
       default: true
+    },
+    /**
+     * navBar 样式
+     */
+    navBarStyle: {
+      type: Object,
+      default: () => {
+        return {
+          backgroundColor: 'white'
+        }
+      }
     }
   },
   data () {

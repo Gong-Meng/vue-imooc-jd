@@ -1,17 +1,22 @@
 <template>
-  <div class="home">
-    <navigation-bar :is-show-back="false">
+  <div class="home" @scroll="onScrollChange">
+    <navigation-bar :is-show-back="false" :nav-bar-style="navBarStyle">
         <!-- 左侧插槽 -->
         <template v-slot:nav-left>
-            <img src="@img/more-white.svg" alt="">
+            <img :src="navBarCurrentSlotStyle.leftIcon" alt="">
         </template>
         <!-- 中间插槽 -->
         <template v-slot:nav-center>
-          <search :icon="require('@img/search.svg')" :hint-color="'#999'" :bg-color="'#fff'"></search>
+          <search
+            :icon="navBarCurrentSlotStyle.search.icon"
+            :hint-color="navBarCurrentSlotStyle.search.hintColor"
+            :bgColor="navBarCurrentSlotStyle.search.bgColor"
+          >
+          </search>
         </template>
         <!-- 右侧插槽 -->
         <template v-slot:nav-right>
-          <img src="@img/message-white.svg" alt="">
+          <img :src="navBarCurrentSlotStyle.rightIcon" alt="">
         </template>
     </navigation-bar>
     <div class="home-content">
@@ -63,10 +68,52 @@ export default {
       swiperData: [],
       swiperHeight: '184px',
       activityDatas: [],
-      secondsDatas: []
+      secondsDatas: [],
+      // navBar 插槽样式数据，包含页面未开始滑动的时候插槽的样式 (默认样式)
+      // 和 页面滑动到锚定点之后的插槽的样式 （高亮样式）
+      navBarSlotStyle: {
+        // 默认样式
+        normal: {
+          // 左侧插槽
+          leftIcon: require('@img/more-white.svg'),
+          // 中间插槽
+          search: {
+            bgColor: '#fff',
+            hintColor: '#999',
+            icon: require('@img/search.svg')
+          },
+          // 右侧插槽
+          rightIcon: require('@img/message-white.svg')
+        },
+        // 高亮样式
+        highlight: {
+          // 左侧插槽
+          leftIcon: require('@img/more.svg'),
+          // 中间插槽
+          search: {
+            bgColor: '#d7d7d7',
+            hintColor: '#fff',
+            icon: require('@img/search-white.svg')
+          },
+          // 右侧插槽
+          rightIcon: require('@img/message.svg')
+        }
+      },
+      // navBar 当前使用的插槽样式
+      navBarCurrentSlotStyle: {},
+      // navBar 的定制样式
+      navBarStyle: {
+        position: 'fixed',
+        backgroundColor: ''
+      },
+      // 记录页面滚动值
+      scrollTopValue: -1,
+      // 锚点值
+      ANCHOR_SCROLL_TOP: 160
     }
   },
   created () {
+    this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal
     this.initData()
   },
   methods: {
@@ -96,6 +143,29 @@ export default {
         this.activityDatas = activityData.list
         this.secondsDatas = secondsData.list
       }))
+    },
+    /**
+     * 监听页面滚动
+     * 1、获取当前页面滚动的距离
+     * 2、计算navBar 背景颜色（背景透明度）
+     *    当前滚动的距离 / 锚点值 = navBar 背景透明度 opacity
+     * 3、opacity >= 1 当前滚动的距离 已经等于或超过锚点值，当前navBar插槽的样式变为高亮状态的样式
+     *    否则的话 opacity < 1, 当前navBar插槽的样式为默认样式
+     */
+    onScrollChange ($event) {
+      // 当前页面滚动的距离
+      this.scrollTopValue = $event.target.scrollTop
+      // 计算navBar 背景颜色（背景透明度）
+      const opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP
+      // 指定 navBar 插槽样式
+      if (opacity >= 1) {
+        this.navBarCurrentSlotStyle = this.navBarSlotStyle.highlight
+      } else {
+        this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal
+      }
+
+      // 根据透明比例来设置navbar 的背景颜色
+      this.navBarStyle.backgroundColor = 'rgba(255, 255, 255, ' + opacity + ')'
     }
   }
 }
