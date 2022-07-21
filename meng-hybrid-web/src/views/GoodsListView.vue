@@ -82,9 +82,10 @@ export default {
   flex-direction: column;
 
   &-content {
-    height: 100%;
+    height: 0;
     display: flex;
     flex-direction: column;
+    flex: 1; //自适应剩余高度
   }
 }
 </style>
