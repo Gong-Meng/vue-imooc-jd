@@ -13,7 +13,10 @@
     2、生成不同高度的图片，撑起不同高度的item
     3、计算 item 的位置，来达到 从上到下，从左到右依次排列的目的
    -->
-  <div class="goods" :class="layoutClass" :style="{height: goodsViewHeight}">
+   <!--
+      如果不允许 goods 单独滑动，那么就不添加 goods-scroll 类
+    -->
+  <div class="goods" :class="[layoutClass, {'goods-scroll': isScroll}]" :style="{height: goodsViewHeight}">
     <div class="goods-item" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
       <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
@@ -52,6 +55,14 @@ export default {
     layoutType: {
       type: String,
       default: '1'
+    },
+    /**
+     * 是否允许 goods 单独滑动
+     * 默认允许 goods 单独滑动
+     */
+    isScroll: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -200,8 +211,11 @@ export default {
         this.goodsItemStyles.push(goodsItemStyle)
       })
 
-      // 对比左右两侧最大的高度，最大的高度为goods 组件的高度
-      this.goodsViewHeight = (leftHeightTotal > rightHeightTotal ? leftHeightTotal : rightHeightTotal) + 'px'
+      // 在不允许 Goods 单独滑动的时候
+      if (!this.isScroll) {
+        // 对比左右两侧最大的高度，最大的高度为goods 组件的高度
+        this.goodsViewHeight = (leftHeightTotal > rightHeightTotal ? leftHeightTotal : rightHeightTotal) + 'px'
+      }
     }
   }
 }
@@ -210,8 +224,11 @@ export default {
 @import '@css/style.scss';
 .goods{
   background-color: $bgColor;
-  overflow: hidden;
-  overflow-y: auto;
+
+  &-scroll{
+    overflow: hidden;
+    overflow-y: auto;
+  }
 
   &-item{
     background-color: #fff;

@@ -39,7 +39,7 @@
         </div>
       </activity>
       <!-- 商品列表 -->
-      <goods></goods>
+      <goods :layout-type="'3'" :is-scroll="false"></goods>
     </div>
   </div>
 </template>
