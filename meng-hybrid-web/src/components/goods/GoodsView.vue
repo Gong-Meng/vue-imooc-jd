@@ -73,25 +73,67 @@ export default {
       // 不同展示形式下的类名
       // 1、垂直列表的展示形式（默认）->goods-list & goods-list-item
       // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
-      layoutClass: 'goods-grid',
-      layoutItemClass: 'goods-grid-item'
+      layoutClass: 'goods-list',
+      layoutItemClass: 'goods-list-item'
     }
   },
   created () {
     this.initData()
   },
+  watch: {
+    /**
+     * 监听 layoutType
+     */
+    layoutType () {
+      this.initLayout()
+    }
+  },
   methods: {
+    /**
+     * 设置布局，为不同的layoutType设定不同的展示形式
+     * 1、初始化影响到布局的数据
+     *    1、goodsViewHeight -> 垂直布局、网格布局（100%）瀑布流布局（实际高度）
+     *    2、goodsItemStyles
+     *    3、imgStyles
+     * 2、为不同的 layoutType 设置不同的展示类
+     */
+    initLayout () {
+      // 初始化数据
+      this.goodsViewHeight = '100%'
+      this.goodsItemStyles = []
+      this.imgStyles = []
+      // 为不同的 layoutType 设置不同的展示类
+      switch (this.layoutType) {
+        // 垂直列表
+        case '1':
+          this.layoutClass = 'goods-list'
+          this.layoutItemClass = 'goods-list-item'
+          break
+        // 网格列表
+        case '2':
+          this.layoutClass = 'goods-grid'
+          this.layoutItemClass = 'goods-grid-item'
+          break
+        // 瀑布流布局
+        case '3':
+          this.layoutClass = 'goods-waterfall'
+          this.layoutItemClass = 'goods-waterfall-item'
+
+          this.initItemStyles()
+          // 调用创建瀑布流的方法 等到dom 创建完成之后
+          this.$nextTick(() => {
+            this.initWaterFall()
+          })
+          break
+      }
+    },
     /**
      * 获取数据
      */
     initData () {
       this.$http.get('/goods').then(data => {
         this.dataSource = data.list
-        // this.initItemStyles()
-        // // 调用创建瀑布流的方法 等到dom 创建完成之后
-        // this.$nextTick(() => {
-        //   this.initWaterFall()
-        // })
+        this.initLayout()
       })
     },
     /**
