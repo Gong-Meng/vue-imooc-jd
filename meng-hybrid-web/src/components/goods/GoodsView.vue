@@ -16,6 +16,12 @@
    <!--
       如果不允许 goods 单独滑动，那么就不添加 goods-scroll 类
     -->
+    <!--
+      商品排序：
+        1、排序之后的数据源，用来在html中进行展示（替换掉 dataSource）
+        2、定义排序规则（可以直接使用 GoodsOptions 中数据源 的id）
+        3、定义排序的方法，根据排序规则来修改对应的排序
+    -->
   <div class="goods" :class="[layoutClass, {'goods-scroll': isScroll}]" :style="{height: goodsViewHeight}">
     <div class="goods-item" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
