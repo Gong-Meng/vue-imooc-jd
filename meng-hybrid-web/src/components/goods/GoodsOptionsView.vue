@@ -13,29 +13,34 @@
           >
             {{item.name}}
           </span>
-          <span v-if="item.subs.length > 0" class="goods-options-list-item-content-caret caret"></span>
+          <span v-if="item.subs.length > 0" class="goods-options-list-item-content-caret caret"
+            :class="[isShowSubContent && selectOption.id === item.id ? 'goods-options-list-item-content-caret-open' : 'goods-options-list-item-content-caret-close']"
+          >
+          </span>
         </a>
       </li>
     </ul>
     <!-- 子选项内容 -->
-    <div class="options-sub-content" v-show="isShowSubContent">
-      <ul class="options-sub-content-list">
-        <li class="options-sub-content-list-item"
-          v-for="(item, index) in selectOption.subs" :key="index"
-        >
-          <a class="options-sub-content-list-item-content" href="javascript:;"
-            @click="onSubOptionsItemClick(item, index)"
+    <transition name="fold-height">
+      <div class="options-sub-content" v-show="isShowSubContent">
+        <ul class="options-sub-content-list">
+          <li class="options-sub-content-list-item"
+            v-for="(item, index) in selectOption.subs" :key="index"
           >
-            <span class="options-sub-content-list-item-content-name"
-              :class="{'options-sub-content-list-item-content-name-active': selectOption.id === item.id}"
+            <a class="options-sub-content-list-item-content" href="javascript:;"
+              @click="onSubOptionsItemClick(item, index)"
             >
-              {{item.name}}
-            </span>
-            <img v-show="selectOption.id === item.id" class="options-sub-content-list-item-content-select" src="@img/options-select.svg" alt="">
-          </a>
-        </li>
-      </ul>
-    </div>
+              <span class="options-sub-content-list-item-content-name"
+                :class="{'options-sub-content-list-item-content-name-active': selectOption.id === item.id}"
+              >
+                {{item.name}}
+              </span>
+              <img v-show="selectOption.id === item.id" class="options-sub-content-list-item-content-select" src="@img/options-select.svg" alt="">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -159,6 +164,19 @@ export default {
             color: $mainColor;
           }
         }
+
+        // 三角形的动画
+        &-caret{
+          // 子选项展开时，三角形的动画
+          &-open{
+            transform: rotate(-180deg);
+            transform: all .3s;
+          }
+          &-close{
+            transform: rotate(0deg);
+            transition: all .3s;
+          }
+        }
       }
     }
   }
@@ -198,6 +216,35 @@ export default {
           }
         }
       }
+    }
+  }
+
+  // 子选项内容展开动画， 当 v-if/v-show="true" 时候 调用
+  .fold-height-enter-active{
+    animation-duration: .3s;
+    animation-name: fold-height-open;
+  }
+  @keyframes fold-height-open {
+    0% { // 初始状态
+      max-height: 0;
+    }
+    100% {
+      max-height: px2rem(180);
+    }
+  }
+
+  // 子选项内容关闭动画， 当 v-if/v-show="false" 时候 调用
+  .fold-height-leave-active {
+    animation-duration: .3s;
+    animation-name: fold-height-close;
+  }
+
+  @keyframes fold-height-close {
+    0% { // 初始状态
+      max-height: px2rem(180);
+    }
+    100% { // 完成状态
+      max-height: 0;
     }
   }
 }
