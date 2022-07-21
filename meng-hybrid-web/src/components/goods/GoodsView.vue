@@ -23,7 +23,7 @@
         3、定义排序的方法，根据排序规则来修改对应的排序
     -->
   <div class="goods" :class="[layoutClass, {'goods-scroll': isScroll}]" :style="{height: goodsViewHeight}">
-    <div class="goods-item" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
+    <div class="goods-item" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
       <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
       <!-- desc 详情描述 -->
@@ -69,12 +69,26 @@ export default {
     isScroll: {
       type: Boolean,
       default: true
+    },
+    /**
+     * 排序规则 （依赖 GoodsOptions 数据源的id）
+     * 1：默认
+     * 1-2：价格由高到底
+     * 1-3：销量由高到底
+     * 2：有货优先
+     * 3：直营优先
+     */
+    sort: {
+      type: String,
+      default: '1'
     }
   },
   data () {
     return {
       // 数据源
       dataSource: [],
+      // 排序数据
+      sortGoodsData: [],
       // 最大高度
       MAX_IMG_HEIGHT: 230,
       // 最小高度
@@ -103,9 +117,75 @@ export default {
      */
     layoutType () {
       this.initLayout()
+    },
+    /**
+     * 监听 sort 改变
+     */
+    sort () {
+      this.setSortGoodsData()
     }
   },
   methods: {
+    /**
+     * 商品排序
+     */
+    setSortGoodsData () {
+      switch (this.sort) {
+        // 默认
+        case '1':
+          // 深拷贝，不改变原数组
+          this.sortGoodsData = this.dataSource.slice(0)
+          break
+        // 价格又高到底
+        case '1-2':
+          this.getSortGoodsDataFromKey('price')
+          break
+        // 销量由高到底
+        case '1-3':
+          this.getSortGoodsDataFromKey('volume')
+          break
+        // 有货优先
+        case '2':
+          this.getSortGoodsDataFromKey('isHave')
+          break
+        // 直营优先
+        case '3':
+          this.getSortGoodsDataFromKey('isDirect')
+          break
+      }
+    },
+    /**
+     * 根据传入的 key 来进行排序
+     */
+    getSortGoodsDataFromKey (key) {
+      /**
+       * sort 可以完成数组的数据排序
+       * 当接收的值 为负数的时候，表示 goods1 排列在 goods2 之前
+       * 当接收的值 为正数的时候，表示 goods1 排列在 goods2 之后
+       * 接收的值为0的时候，表示排序不变
+       */
+      this.sortGoodsData.sort((goods1, goods2) => {
+        // 根据传入的key 获取对应的 value
+        const v1 = goods1[key]
+        const v2 = goods2[key]
+        // 对value进行对比
+        // boolean 类型值（有货优先和直营优先）
+        if (typeof v1 === 'boolean') {
+          if (v1) {
+            return -1
+          }
+          if (v2) {
+            return 1
+          }
+          return 0
+        }
+        // float 类型值得处理（价格，销量）
+        if (parseFloat(v1) >= parseFloat(v2)) {
+          return -1
+        }
+        return 1
+      })
+    },
     /**
      * 设置布局，为不同的layoutType设定不同的展示形式
      * 1、初始化影响到布局的数据
@@ -150,6 +230,9 @@ export default {
     initData () {
       this.$http.get('/goods').then(data => {
         this.dataSource = data.list
+        // 数据排序
+        this.setSortGoodsData()
+        // 设置布局
         this.initLayout()
       })
     },

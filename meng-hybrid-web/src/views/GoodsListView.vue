@@ -6,8 +6,8 @@
       </template>
     </navigation-bar>
     <div class="goods-list-page-content">
-      <goods-options></goods-options>
-      <goods :layout-type="layoutType.type"></goods>
+      <goods-options @optionsChange="onGoodsOptionsChange"></goods-options>
+      <goods :layout-type="layoutType.type" :sort="sortType"></goods>
     </div>
   </div>
 </template>
@@ -43,7 +43,9 @@ export default {
         }
       ],
       // 当前 goods 展示形式
-      layoutType: {}
+      layoutType: {},
+      // goods 排序规则
+      sortType: '1'
     }
   },
   created () {
@@ -67,6 +69,12 @@ export default {
       } else {
         this.layoutType = this.layoutTypeDatas[0]
       }
+    },
+    /**
+     * 当筛选项改变时被调用
+     */
+    onGoodsOptionsChange (sortType) {
+      this.sortType = sortType
     }
   }
 }

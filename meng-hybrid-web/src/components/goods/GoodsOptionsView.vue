@@ -87,6 +87,14 @@ export default {
       isShowSubContent: false
     }
   },
+  watch: {
+    /**
+     * 监听筛选项改变
+     */
+    selectOption (newV) {
+      this.$emit('optionsChange', newV.id)
+    }
+  },
   created () {
     this.selectOption = this.optionsDatas[0]
   },
