@@ -72,8 +72,9 @@ export default {
       goodsViewHeight: '100%',
       // 不同展示形式下的类名
       // 1、垂直列表的展示形式（默认）->goods-list & goods-list-item
-      layoutClass: 'goods-list',
-      layoutItemClass: 'goods-list-item'
+      // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
+      layoutClass: 'goods-grid',
+      layoutItemClass: 'goods-grid-item'
     }
   },
   created () {
@@ -225,6 +226,24 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       padding: $marginSize;
+    }
+  }
+}
+
+// 网格布局
+.goods-grid {
+  padding: $marginSize;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &-item{
+    width: 49%;
+    border-radius: $radiusSize;
+    margin-bottom: $marginSize;
+
+    .goods-item-img{
+      width: 100%;
     }
   }
 }
