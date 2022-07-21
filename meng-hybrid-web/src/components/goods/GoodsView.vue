@@ -1,5 +1,13 @@
 <template>
   <!--
+    如何在同一个组件中去展示不同的样式：
+    1、html表示整个布局的结构，具体的展示样式，将又css决定
+    2、每种展示样式对应不同的 css， 也就是对应不同的类名
+      1、垂直列表 -> goods-list
+      2、网格布局 -> goods-grid
+      3、瀑布流 -> goods-waterfall
+    3、 实现不同的展示形式，本质上就是实现不同的css样式
+
     瀑布流的布局：
     1、创建商品列表的基本html 和 css, 让 item 相对于 goods (div) 进行排列
     2、生成不同高度的图片，撑起不同高度的item
@@ -182,6 +190,7 @@ export default {
     }
   }
 }
+// 瀑布流
 .goods-waterfall{
   position: relative;
   margin: $marginSize;
