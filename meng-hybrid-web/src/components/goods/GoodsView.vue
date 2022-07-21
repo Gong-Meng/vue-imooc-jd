@@ -13,8 +13,8 @@
     2、生成不同高度的图片，撑起不同高度的item
     3、计算 item 的位置，来达到 从上到下，从左到右依次排列的目的
    -->
-  <div class="goods goods-waterfall" :style="{height: goodsViewHeight}">
-    <div class="goods-item goods-waterfall-item" ref="goodsItem" v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
+  <div class="goods" :class="layoutClass" :style="{height: goodsViewHeight}">
+    <div class="goods-item" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in dataSource" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
       <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
       <!-- desc 详情描述 -->
@@ -42,6 +42,18 @@ export default {
     Direct,
     NoHave
   },
+  props: {
+    /**
+     * 在父元素中指定的展示形式
+     * 1：垂直列表
+     * 2：网格布局
+     * 3：瀑布流布局
+     */
+    layoutType: {
+      type: String,
+      default: '1'
+    }
+  },
   data () {
     return {
       // 数据源
@@ -57,7 +69,11 @@ export default {
       // item 样式集合
       goodsItemStyles: [],
       // goods 组件高度
-      goodsViewHeight: 0
+      goodsViewHeight: '100%',
+      // 不同展示形式下的类名
+      // 1、垂直列表的展示形式（默认）->goods-list & goods-list-item
+      layoutClass: 'goods-list',
+      layoutItemClass: 'goods-list-item'
     }
   },
   created () {
@@ -70,11 +86,11 @@ export default {
     initData () {
       this.$http.get('/goods').then(data => {
         this.dataSource = data.list
-        this.initItemStyles()
-        // 调用创建瀑布流的方法 等到dom 创建完成之后
-        this.$nextTick(() => {
-          this.initWaterFall()
-        })
+        // this.initItemStyles()
+        // // 调用创建瀑布流的方法 等到dom 创建完成之后
+        // this.$nextTick(() => {
+        //   this.initWaterFall()
+        // })
       })
     },
     /**
@@ -151,6 +167,8 @@ export default {
 @import '@css/style.scss';
 .goods{
   background-color: $bgColor;
+  overflow: hidden;
+  overflow-y: auto;
 
   &-item{
     background-color: #fff;
@@ -190,6 +208,27 @@ export default {
     }
   }
 }
+
+// 垂直列表
+.goods-list {
+  &-item{
+    display: flex;
+    border-bottom: 1px solid $lineColor;
+
+    .goods-item-img{
+      width: px2rem(120);
+      height: px2rem(120);
+    }
+
+    .goods-item-desc{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: $marginSize;
+    }
+  }
+}
+
 // 瀑布流
 .goods-waterfall{
   position: relative;

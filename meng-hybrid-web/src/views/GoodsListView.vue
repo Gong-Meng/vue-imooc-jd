@@ -3,17 +3,20 @@
     <navigation-bar :page-name="'商品列表'" @onLeftClick="onBackClick"></navigation-bar>
     <div class="goods-list-page-content">
       <goods-options></goods-options>
+      <goods></goods>
     </div>
   </div>
 </template>
 <script>
 import NavigationBar from '@/components/currency/NavigationBarView.vue'
 import GoodsOptions from '@/components/goods/GoodsOptionsView.vue'
+import Goods from '@c/goods/GoodsView.vue'
 
 export default {
   components: {
     NavigationBar,
-    GoodsOptions
+    GoodsOptions,
+    Goods
   },
   data () {
     return {
