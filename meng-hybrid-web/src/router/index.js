@@ -19,6 +19,11 @@ const routes = [
     // vue-router 懒加载 -> 只有在使用的时候才会去加载 GoodsList
     // chunkName -> GoodsList.[hash].js
     component: () => import(/* webpackChunkName: "GoodsList" */ '../views/GoodsListView.vue')
+  },
+  {
+    path: '/goodsDetail',
+    name: 'goodsDetail',
+    component: () => import(/* webpackChunkName: "GoodsDetail" */ '../views/GoodsDetailView.vue')
   }
 ]
 

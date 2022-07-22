@@ -23,7 +23,7 @@
         3、定义排序的方法，根据排序规则来修改对应的排序
     -->
   <div class="goods" :class="[layoutClass, {'goods-scroll': isScroll}]" :style="{height: goodsViewHeight}">
-    <div class="goods-item" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
+    <div class="goods-item" @click="onItemClick(item)" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
       <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
       <!-- desc 详情描述 -->
@@ -31,8 +31,8 @@
           <p class="goods-item-desc-name text-line-2" :class="{'goods-item-desc-name-hint': item.isHave}">
             <!-- 是否为直营 -->
             <direct v-if="item.isDirect"></direct>
-            <!-- 是否为库存 -->
-            <no-have v-if="item.isHave"></no-have>
+            <!-- 是否为缺货 -->
+            <no-have v-if="!item.isHave"></no-have>
             {{item.name}}
           </p>
           <div class="goods-item-desc-data">
@@ -126,6 +126,19 @@ export default {
     }
   },
   methods: {
+    onItemClick (item) {
+      // 商品无库存不允许跳转
+      if (!item.isHave) {
+        alert('该商品无库存')
+        return
+      }
+      this.$router.push({
+        name: 'goodsDetail',
+        params: {
+          goods: item
+        }
+      })
+    },
     /**
      * 商品排序
      */
