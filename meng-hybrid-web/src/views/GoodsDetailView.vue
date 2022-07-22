@@ -180,7 +180,7 @@ export default {
             &-item{
               display: flex;
               align-items: center;
-              padding: px2re(6) 0;
+              padding: px2rem(6) 0;
               margin-right: $marginSize;
 
               img{
