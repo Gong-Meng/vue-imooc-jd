@@ -3,11 +3,25 @@
     <navigation-bar :is-show-back="false" :nav-bar-style="navBarStyle">
       <template v-slot:nav-left>
         <div class="goods-detail-nav-left" @click="onBackClick">
-          <img src="@img/back-2.svg" alt="">
+          <!-- 默认状态下黑色后退按钮 -->
+          <img src="@img/back-2.svg" alt=""
+            :style="{opacity: leftImgOpacity}"
+          >
+          <!-- 完全展示之后的白色后退按钮 -->
+          <img src="@img/back-white.svg" alt=""
+            :style="{opacity: navBarSlotOpacity}"
+          >
         </div>
       </template>
+      <template v-slot:nav-center>
+        <p class="goods-detail-nav-title"
+          :style="{opacity: navBarSlotOpacity}"
+        >
+          商品详情
+        </p>
+      </template>
     </navigation-bar>
-    <div class="goods-detail-content">
+    <div class="goods-detail-content" @scroll="onScrollChange">
       <my-swiper
         :height="SWIPER_IMAGE_HEIGHT + 'px'"
         :swiper-imgs="goodsData.swiperImgs"
@@ -79,11 +93,14 @@ export default {
   },
   data () {
     return {
+      // swiper 高度
       SWIPER_IMAGE_HEIGHT: 364,
-      navBarStyle: {
-        backgroundColor: '',
-        position: 'fixed'
-      },
+      // 锚点值
+      ANCHOR_SCROLL_TOP: 310,
+      // navBarStyle: {
+      //   backgroundColor: '',
+      //   position: 'fixed'
+      // },
       goodsData: {},
       // 附加服务
       attachDatas: [
@@ -93,13 +110,49 @@ export default {
         '211限时达',
         '可自提',
         '不可使用优惠卷'
-      ]
+      ],
+      // 页面滑动
+      scrollValue: 0
+    }
+  },
+  computed: {
+    /**
+     * 默认状态下左侧后退按钮的透明度
+     */
+    leftImgOpacity () {
+      // 在home中，目的：navBar 逐渐显示：scroll / 锚点值 = opacity
+      // 默认状态下后退按钮，逐渐隐藏 1 - opacity
+      return 1 - this.scrollValue / this.ANCHOR_SCROLL_TOP
+    },
+    /**
+     * navBar 的样式
+     */
+    navBarStyle () {
+      return {
+        backgroundColor: 'rgba(216, 30, 6, ' + this.navBarSlotOpacity + ')',
+        position: 'fixed',
+        top: 0
+      }
+    },
+    /**
+     * navBar 插槽透明度
+     * 默认状态下后退按钮逐渐隐藏的过程中，插槽逐渐显示
+     */
+    navBarSlotOpacity () {
+      return 1 - this.leftImgOpacity
     }
   },
   created () {
     this.goodsData = this.$route.params.goods
   },
   methods: {
+    /**
+     * 监听页面的滑动
+     */
+    onScrollChange ($event) {
+      // 获取当前页面的滑动值
+      this.scrollValue = $event.target.scrollTop
+    },
     /**
      * 后退当前页面
      */
@@ -120,10 +173,21 @@ export default {
   &-nav-left{
     width: 100%;
     display: flex;
-
+    // 两个图片重合
+    position: relative;
     img{
+      position: absolute;
       align-self: center;
     }
+  }
+
+  &-nav-title{
+    width: 100%;
+    height: 100%;
+    font-size: $titleSize;
+    font-weight: bold;
+    text-align: center;
+    color: white;
   }
 
   &-content{
