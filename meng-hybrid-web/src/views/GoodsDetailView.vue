@@ -11,6 +11,7 @@
       <my-swiper
         :height="SWIPER_IMAGE_HEIGHT + 'px'"
         :swiper-imgs="goodsData.swiperImgs"
+        :paginationType="'2'"
       >
       </my-swiper>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="swiperOption" ref="mySwiper">
+  <swiper :options="swiperOptions" ref="mySwiper">
     <!-- slides -->
     <swiper-slide v-for="(item, index) in swiperImgs" :key="index">
       <img class="swiper-slide-img" :style="{height: height}" :src="item" alt="">
@@ -26,6 +26,14 @@ export default {
     height: {
       type: String,
       default: 'auto'
+    },
+    /**
+     * 1、圆点切换
+     * 2、数字
+     */
+    paginationType: {
+      type: String,
+      default: '1'
     }
   },
   components: {
@@ -34,7 +42,7 @@ export default {
   },
   data () {
     return {
-      swiperOption: {
+      swiperOptions: {
         // 自动滚动
         autoplay: true,
         // 自动高度，让 siwper 的高度跟随 slide 的高度变化
@@ -47,6 +55,31 @@ export default {
         }
       }
     }
+  },
+  created () {
+    this.initPaginationLayout()
+  },
+  methods: {
+    initPaginationLayout () {
+      switch (this.paginationType) {
+        // 圆点分页器
+        case '1':
+          this.swiperOptions.pagination = {
+            el: '.swiper-pagination',
+            // 分页器样式
+            type: 'bullets',
+            bulletClass: 'custom-bullet-class'
+          }
+          break
+        // 数字分页器
+        case '2':
+          this.swiperOptions.pagination = {
+            el: '.swiper-pagination',
+            type: 'fraction' // 数字分页器样式
+          }
+          break
+      }
+    }
   }
 }
 </script>
@@ -55,6 +88,7 @@ export default {
 .swiper-slide-img{
   width: 100%;
 }
+// 圆点分页器
 .swiper-pagination{
   bottom: px2rem(123);
   .custom-bullet-class{
@@ -69,6 +103,25 @@ export default {
   }
   .swiper-pagination-bullet-active{
     background-color: #fff;
+  }
+}
+
+// 数字分页器
+.swiper-pagination-fraction{
+  left: auto;
+  right: 0;
+  width: auto;
+  font-size:  $infoSize;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: px2rem(6) px2rem(18);
+  border-top-left-radius: px2rem(16);
+  border-bottom-left-radius: px2rem(16);
+  bottom: px2rem(32);
+  color: white;
+
+  .swiper-pagination-current{
+    font-size: $titleSize;
+    font-weight: bold;
   }
 }
 </style>
