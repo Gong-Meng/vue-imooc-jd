@@ -66,6 +66,13 @@ export default {
         // 后退页面
         this.transitionName = 'fold-right'
       }
+
+      /**
+       * 初始化虚拟任务栈
+       */
+      if (to.params.clearTask) {
+        this.virtualTaskStack = ['main-view']
+      }
     }
   }
 }

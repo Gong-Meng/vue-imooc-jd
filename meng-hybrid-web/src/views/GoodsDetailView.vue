@@ -78,7 +78,7 @@
     </div>
     <!-- 加入购物车、立即购买 -->
     <div class="goods-detail-buy">
-      <div class="goods-detail-buy-add">
+      <div class="goods-detail-buy-add" @click="onAddGoodsClick()">
         加入购物车
       </div>
       <div class="goods-detail-buy-now" @click="onBuyClick()">
@@ -206,6 +206,22 @@ export default {
         },
         query: {
           goodsId: this.goodsData.id
+        }
+      })
+    },
+    /**
+     * 加入购物车
+     */
+    onAddGoodsClick () {
+      alert('添加成功')
+      this.$router.push({
+        name: 'main-view',
+        params: {
+          routerType: 'push',
+          // 自定义标记, 在 toolbar 中定义的 tab数据源数据的下标
+          componentIndex: 1,
+          // 自定义标记，清空虚拟任务栈
+          clearTask: true
         }
       })
     }

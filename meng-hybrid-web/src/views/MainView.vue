@@ -5,7 +5,7 @@
         <!-- 动态组件 -->
         <component :is="currentComponent"></component>
       </keep-alive>
-      <tool-bar @onChangeFragment="onChangeFragment"></tool-bar>
+      <tool-bar ref="toolBar" @onChangeFragment="onChangeFragment"></tool-bar>
     </div>
 </template>
 
@@ -25,10 +25,26 @@ export default {
       currentComponent: 'home'
     }
   },
+  activated () {
+    console.log(this.$route)
+    // 在keepalive 被激活的时候，调用指定加载页面组件的方法
+    this.pushFragment()
+  },
   methods: {
     // 组件切换
     onChangeFragment (componentName) {
       this.currentComponent = componentName
+    },
+    /**
+     * 指定加载的页面组件
+     */
+    pushFragment () {
+      // 获取到组件加载的下标
+      const componentIndex = this.$route.params.componentIndex
+      // 如果没有下标的话，直接让方法return
+      if (componentIndex === undefined) return
+      // 通过 toolbar 来切换对应的组件
+      this.$refs.toolBar.pushFragment(componentIndex)
     }
   }
 }
