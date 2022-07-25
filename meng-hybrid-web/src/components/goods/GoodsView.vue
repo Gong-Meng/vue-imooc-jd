@@ -145,6 +145,9 @@ export default {
         params: {
           routerType: 'push',
           goods: item
+        },
+        query: {
+          goodsId: item.id
         }
       })
     },

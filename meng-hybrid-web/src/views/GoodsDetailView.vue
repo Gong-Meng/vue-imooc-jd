@@ -153,7 +153,21 @@ export default {
     }
   },
   created () {
-    this.goodsData = this.$route.params.goods
+    /**
+     * 问题：
+     *  当我们直接在浏览器中，刷新页面的时候，vueRouter 里面的 params 数据会被重置
+     *  这个时候，我们拿到的 goods === undefined
+     * 解决方案：
+     *  在页面里面，无论我们如何去刷新页面，我们都可以获取到商品的数据
+     *  1、在网页的URL中，添加上商品的标记
+     *  2、通过后台提供的接口，根据这个商品的标记来获取到对应的商品数据
+     *  3、goodsData = 从后台获取到的商品数据
+     */
+    if (this.$route.params.goods) {
+      this.goodsData = this.$route.params.goods
+    } else {
+      this.loadGoodsData()
+    }
   },
   methods: {
     /**
@@ -168,6 +182,18 @@ export default {
      */
     onBackClick () {
       this.$router.go(-1)
+    },
+    /**
+     * 根据商品ID，获取到商品数据
+     */
+    loadGoodsData () {
+      this.$http.get('/goodsDetail', {
+        params: {
+          goodsId: this.$route.query.goodsId
+        }
+      }).then(data => {
+        this.goodsData = data.goodsData
+      })
     }
   }
 }
@@ -202,7 +228,7 @@ export default {
   }
 
   &-content{
-    // overflow: hidden;
+    overflow: hidden;
     // overflow-y: auto;
     height: 100%;
 
