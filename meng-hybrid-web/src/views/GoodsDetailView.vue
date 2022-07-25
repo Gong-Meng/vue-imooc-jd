@@ -81,7 +81,7 @@
       <div class="goods-detail-buy-add">
         加入购物车
       </div>
-      <div class="goods-detail-buy-now">
+      <div class="goods-detail-buy-now" @click="onBuyClick()">
         立即购买
       </div>
     </div>
@@ -193,6 +193,20 @@ export default {
         }
       }).then(data => {
         this.goodsData = data.goodsData
+      })
+    },
+    /**
+     * 立即购买
+     */
+    onBuyClick () {
+      this.$router.push({
+        name: 'buy-view',
+        params: {
+          routerType: 'push'
+        },
+        query: {
+          goodsId: this.goodsData.id
+        }
       })
     }
   }
