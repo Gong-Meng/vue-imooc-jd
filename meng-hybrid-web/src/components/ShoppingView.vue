@@ -33,7 +33,9 @@ export default {
     NavigationBar
   },
   data () {
-    return {}
+    return {
+      shoppingDatas: this.$store.state.shoppingDatas
+    }
   }
 }
 

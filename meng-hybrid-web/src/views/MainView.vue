@@ -26,7 +26,6 @@ export default {
     }
   },
   activated () {
-    console.log(this.$route)
     // 在keepalive 被激活的时候，调用指定加载页面组件的方法
     this.pushFragment()
   },
