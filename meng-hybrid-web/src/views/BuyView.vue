@@ -1,6 +1,7 @@
 <template>
   <div class="buy-page">
-    <navigation-bar :pageName="立即购买" @onLeftClick="onBackClick"></navigation-bar>
+    <navigation-bar :page-name="'立即购买'" @onLeftClick="onBackClick">
+    </navigation-bar>
 
     <!-- 内容区 -->
     <div class="buy-page-content">
@@ -99,7 +100,7 @@ export default {
     /**
      * 后退页面
      */
-    onBackClickk () {
+    onBackClick () {
       this.$router.go(-1)
     },
     /**
