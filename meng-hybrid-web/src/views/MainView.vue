@@ -10,6 +10,7 @@
 <script>
 import toolBar from '@c/currency/ToolBarView.vue'
 export default {
+  name: 'main-view',
   components: {
     'tool-bar': toolBar,
     // 异步组件引入方式，异步组件：只有在需要去展示这个组件的时候才会去渲染组件

@@ -94,6 +94,7 @@ import Direct from '@c/goods/DirectView'
 import Parallax from '@c/parallax/ParallaxView.vue'
 
 export default {
+  name: 'goods-detail-view',
   components: {
     NavigationBar,
     MySwiper,

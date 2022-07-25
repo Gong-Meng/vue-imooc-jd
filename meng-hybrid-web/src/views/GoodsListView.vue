@@ -17,6 +17,7 @@ import GoodsOptions from '@/components/goods/GoodsOptionsView.vue'
 import Goods from '@c/goods/GoodsView.vue'
 
 export default {
+  name: 'goods-list-view',
   components: {
     NavigationBar,
     GoodsOptions,
