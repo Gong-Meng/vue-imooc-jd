@@ -70,7 +70,10 @@ export default {
   methods: {
     onItemClick () {
       this.$router.push({
-        name: 'goodsList'
+        name: 'goodsList',
+        params: {
+          routerType: 'push'
+        }
       })
     }
   }

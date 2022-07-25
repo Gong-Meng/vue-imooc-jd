@@ -83,6 +83,7 @@ export default {
 @import '@css/style.scss';
 
 .goods-list-page{
+  position: absolute;
   height: 100%;
   width: 100%;
   background-color: $bgColor;
