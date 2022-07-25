@@ -6,7 +6,7 @@
     <!-- 内容区 -->
     <div class="buy-page-content">
       <!-- 购买的商品 -->
-      <div class="buy-page-content-goods">
+      <div class="buy-page-content-goods" v-if="goodsData">
         <!-- 商品图片 -->
         <img class="buy-page-content-goods-img" :src="goodsData.img" alt="">
         <!-- 商品描述 -->
@@ -14,7 +14,7 @@
           <!-- 商品名称 -->
           <p class="buy-page-content-goods-desc-name">{{goodsData.name}}</p>
           <!-- 商品价格 -->
-          <p class="buy-page-content-goods-desc-price">{{goodsData.price | priceValue}}</p>
+          <p class="buy-page-content-goods-desc-price">￥{{goodsData.price | priceValue}}</p>
         </div>
       </div>
       <!-- 支付方式 -->
@@ -82,7 +82,7 @@ export default {
   },
   created () {
     this.selectPayment = this.paymentDatas[0]
-    this.goodsData = this.loadGoodsData
+    this.goodsData = this.loadGoodsData()
   },
   methods: {
     /**
@@ -119,5 +119,93 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '@css/style.scss';
+.buy-page{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: $bgColor;
 
+  &-content{
+    overflow: hidden;
+    height: 100%;
+
+    // 商品
+    &-goods{
+      background-color: white;
+      padding: $marginSize;
+      display: flex;
+      border-bottom: px2rem(1) solid $lineColor;
+      border-top: px2rem(1) solid $lineColor;
+      margin-top: $marginSize;
+
+      &-img{
+        width: px2rem(100);
+        height: px2rem(100);
+      }
+
+      &-desc{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0 $marginSize;
+
+        &-name{
+          font-size: $infoSize;
+          line-height: px2rem(18);
+        }
+
+        &-price{
+          font-size: $titleSize;
+          color: $mainColor;
+          font-weight: 500;
+        }
+      }
+    }
+
+    // 支付方式
+    &-list{
+      margin-top: $marginSize;
+
+      &-item{
+        display: flex;
+        background-color: white;
+        border-bottom: px2rem(1) solid $lineColor;
+        padding: $marginSize;
+        align-items: center;
+
+        &-icon{
+          height: px2rem(30);
+        }
+
+        &-desc{
+          margin-left: px2rem(12);
+          flex-grow: 1;
+
+          &-name{
+            font-size: $infoSize;
+          }
+
+          &-desc{
+            font-size: $minInfoSize;
+            margin-top: px2rem(6);
+            color: $hintColor;
+          }
+
+          &-check{
+            width: px2rem(16);
+            height: px2rem(16);
+          }
+        }
+      }
+    }
+
+  }
+  // 立即支付按钮
+  .pay{
+    position: absolute;
+    bottom: px2rem(52);
+  }
+}
 </style>
