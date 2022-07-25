@@ -22,7 +22,7 @@
         2、定义排序规则（可以直接使用 GoodsOptions 中数据源 的id）
         3、定义排序的方法，根据排序规则来修改对应的排序
     -->
-  <div class="goods" :class="[layoutClass, {'goods-scroll': isScroll}]" :style="{height: goodsViewHeight}">
+  <div class="goods" ref="goods" @scroll="onScrollChange" :class="[layoutClass, {'goods-scroll': isScroll}]" :style="{height: goodsViewHeight}">
     <div class="goods-item" @click="onItemClick(item)" :class="layoutItemClass" ref="goodsItem" v-for="(item,index) in sortGoodsData" :key="index" :style="goodsItemStyles[index]">
       <!-- 图片 -->
       <img :src="item.img" alt="" class="goods-item-img" :style="imgStyles[index]">
@@ -105,11 +105,19 @@ export default {
       // 1、垂直列表的展示形式（默认）->goods-list & goods-list-item
       // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
       layoutClass: 'goods-list',
-      layoutItemClass: 'goods-list-item'
+      layoutItemClass: 'goods-list-item',
+      // 滑动距离
+      scrollTopValue: 0
     }
   },
   created () {
     this.initData()
+  },
+  activated () {
+    /**
+     * 定位页面滑动位置
+     */
+    this.$refs.goods.scrollTop = this.scrollTopValue
   },
   watch: {
     /**
@@ -133,12 +141,18 @@ export default {
         return
       }
       this.$router.push({
-        name: 'goodsDetail',
+        name: 'goods-detail-view',
         params: {
           routerType: 'push',
           goods: item
         }
       })
+    },
+    /**
+     * 监听滑动事件
+     */
+    onScrollChange ($event) {
+      this.scrollTopValue = $event.target.scrollTop
     },
     /**
      * 商品排序

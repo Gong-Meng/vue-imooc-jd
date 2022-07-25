@@ -20,6 +20,16 @@
           3、如果说 params 包含跳转标记，那么表示当前为跳转动画，否则当前为后退动画
         3、通过 transition 的方式来为 router-view 指定对应的动画效果
      -->
+
+    <!--
+      页面跳转的状态保存：
+        1、所有的组件中数据都会被保存
+        2、需要在组件中创建一个变量（会被keepAlive保存起来），通过这个变量来记录当前页面的滑动距离
+        3、当后退回该页面的时候，使用这个变量来改变当前页面的一个滑动距离。
+          1、应该在什么时机去改变当前页面的滑动距离
+          2、可以在组件的activated（keep-alive组件被激活的时候才会调用）方法中去指定页面滑动模块的滑动距离
+     -->
+
     <transition :name="transitionName">
       <!-- 所有通过 router-view 加载的页面组件都会被缓存 -->
       <keep-alive :include="virtualTaskStack">
