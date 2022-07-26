@@ -45,6 +45,7 @@
                 <!-- 价格 -->
                 <p class="shopping-content-list-item-desc-data-price">￥{{item.price | priceValue}}</p>
                 <!-- 商品数量控制组件 -->
+                <number-manager :default-number="1" @onChangeNumber="onNumberChange(arguments, item, index)"></number-manager>
               </div>
             </div>
           </div>
@@ -78,12 +79,14 @@
 
 <script>
 import NavigationBar from '@c/currency/NavigationBarView.vue'
-import Direct from './goods/DirectView.vue'
+import Direct from '@c/goods/DirectView.vue'
+import NumberManager from '@c/goods/NumberManagerView.vue'
 
 export default {
   components: {
     NavigationBar,
-    Direct
+    Direct,
+    NumberManager
   },
   data () {
     return {
@@ -98,6 +101,21 @@ export default {
         // 总数量
         goodsNumber: 0
       }
+    }
+  },
+  methods: {
+    /**
+     * @param $arguments JS 中提供的类数组对象。如果想要获取到传递的第一个参数，那么就拿 $arguments 0 下标的数据
+     */
+    onNumberChange ($arguments, item, index) {
+      // 最新商品数量
+      const number = $arguments[0]
+
+      // 修改对应的商品数量
+      this.$store.commit('changeShoppingDataNumber', {
+        index: index,
+        number: number
+      })
     }
   }
 }

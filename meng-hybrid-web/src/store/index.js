@@ -39,7 +39,27 @@ export default new Vuex.Store({
      * 添加商品到购物车数据源
      */
     addShoppingData (state, goods) {
+      // 为商品新增属性
+      // isCheck: 表示商品是否选中
+      // number: 表示商品的数量
+      // 通过 Vue.set 的方法可以把新添加的属性变为响应式的数据。
+      // 如果直接通过 goods.isCheck = false; 那么 isCheck 就不是响应式的数据
+
+      Vue.set(goods, 'isCheck', false)
+      Vue.set(goods, 'number', 1)
       state.shoppingDatas.push(goods)
+    },
+    /**
+     * 更改指定的商品数量
+     */
+    changeShoppingDataNumber (state, data) {
+      /**
+       * data:{
+       *  index: 指定的商品
+       *  number: 商品数量
+       * }
+       */
+      state.shoppingDatas[data.index].number = data.number
     }
   },
   actions: {
