@@ -52,7 +52,7 @@ export default {
      */
     onToRegisterClick () {
       this.$router.push({
-        name: 'register',
+        name: 'register-view',
         params: {
           routerType: 'push'
         }
