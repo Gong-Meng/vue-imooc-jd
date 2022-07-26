@@ -29,7 +29,7 @@
             v-for="(item, index) in shoppingDatas" :key="index"
           >
             <!-- check -->
-            <img class="shopping-content-list-item-check" src="@img/no-check.svg" alt="">
+            <img class="shopping-content-list-item-check" @click="onGoodsCheckClick(item)" :src="checkImg(item.isCheck)" alt="">
             <!-- 图片 -->
             <img class="shopping-content-list-item-img" :src="item.img" alt="">
             <!-- 描述 -->
@@ -54,7 +54,7 @@
       <div class="shopping-content-total">
         <!-- 全选的check -->
         <div class="shopping-content-total-check">
-          <img src="@img/no-check.svg" alt="">
+          <img @click="onAllCheckClick()" :src="checkImg(totalData.isAll)" alt="">
           <p>全选</p>
         </div>
 
@@ -70,7 +70,7 @@
 
         <!-- 结算 -->
         <div class="shopping-content-total-commit">
-          去结算{{totalData.goodsNumber}}
+          去结算 ({{totalData.goodsNumber}})
         </div>
       </div>
     </div>
@@ -115,6 +115,68 @@ export default {
       this.$store.commit('changeShoppingDataNumber', {
         index: index,
         number: number
+      })
+
+      // 在商品数量发生变化时，并且 该商品处于选中状态下
+      if (item.isCheck) {
+        this.computeGoodsTotal()
+      }
+    },
+    /**
+     * 商品 check 按钮点击事件
+     */
+    onGoodsCheckClick (item) {
+      item.isCheck = !item.isCheck
+      // 统计数据
+      this.computeGoodsTotal()
+    },
+    /**
+     * 全选check点击事件
+     */
+    onAllCheckClick () {
+      this.totalData.isAll = !this.totalData.isAll
+
+      // 为每个商品设置选中标记，为当前是否全选标记
+      this.shoppingDatas.forEach(item => {
+        item.isCheck = this.totalData.isAll
+      })
+      // 统计数据
+      this.computeGoodsTotal()
+    },
+    /**
+     * check 按钮图片
+     */
+    checkImg (isCheck) {
+      return isCheck ? require('@img/check.svg') : require('@img/no-check.svg')
+    },
+    /**
+     * 计算总计数据
+     */
+    computeGoodsTotal () {
+      // 先去初始化 totalData 数据，让是否全选默认为true，当存在商品没有被选中的时候，则把isAll变为false
+      this.totalData = {
+        // 是否全选
+        isAll: true,
+        // 总价格
+        totalPrice: 0,
+        // 总数量
+        goodsNumber: 0
+      }
+
+      // 计算总计数据
+      /**
+       * 遍历数据源，如果有商品处于未选中状态下，那么则把 isAll 变为 false
+       * 如果商品处于选中状态下，则计算该商品总价格和数量
+       */
+      this.shoppingDatas.forEach(item => {
+        // 如果商品处于选中状态下，则计算该商品总价格和数量
+        if (item.isCheck) {
+          this.totalData.totalPrice += parseFloat(item.price) * parseInt(item.number)
+          this.totalData.goodsNumber += parseInt(item.number)
+        } else {
+          // 如果有商品处于未选中状态下，那么则把 isAll 变为 false
+          this.totalData.isAll = false
+        }
       })
     }
   }
