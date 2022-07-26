@@ -4,7 +4,7 @@
 
     <div class="my-content">
       <!-- 头像区域 -->
-      <div class="my-content-header">
+      <div class="my-content-header" @click="onLoginClick">
         <img class="my-content-header-avater" src="@img/avater.png" alt="">
         <p class="my-content-header-login">登录/注册</p>
       </div>
@@ -38,6 +38,16 @@ export default {
         '应用推荐',
         '用户福利'
       ]
+    }
+  },
+  methods: {
+    onLoginClick () {
+      this.$router.push({
+        name: 'login-view',
+        params: {
+          routerType: 'push'
+        }
+      })
     }
   }
 }
