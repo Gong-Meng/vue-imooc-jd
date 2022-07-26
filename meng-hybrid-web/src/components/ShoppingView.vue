@@ -45,7 +45,7 @@
                 <!-- 价格 -->
                 <p class="shopping-content-list-item-desc-data-price">￥{{item.price | priceValue}}</p>
                 <!-- 商品数量控制组件 -->
-                <number-manager :default-number="1" @onChangeNumber="onNumberChange(arguments, item, index)"></number-manager>
+                <number-manager :default-number="item.number" @onChangeNumber="onNumberChange(arguments, item, index)"></number-manager>
               </div>
             </div>
           </div>

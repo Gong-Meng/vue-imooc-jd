@@ -39,15 +39,26 @@ export default new Vuex.Store({
      * 添加商品到购物车数据源
      */
     addShoppingData (state, goods) {
-      // 为商品新增属性
-      // isCheck: 表示商品是否选中
-      // number: 表示商品的数量
-      // 通过 Vue.set 的方法可以把新添加的属性变为响应式的数据。
-      // 如果直接通过 goods.isCheck = false; 那么 isCheck 就不是响应式的数据
-
-      Vue.set(goods, 'isCheck', false)
-      Vue.set(goods, 'number', 1)
-      state.shoppingDatas.push(goods)
+      // 判断购物车中是否已经包含该商品，如果购物车已经包含了该商品，那么应该让商品数量+1
+      const isExist = state.shoppingDatas.some(item => {
+        // 该商品已经存在于购物车中
+        if (item.id === goods.id) {
+          item.number += 1
+          return true
+        }
+        return false
+      })
+      // 只有当购物车中不包含该商品的时候，才让商品 push 到 shoppingDatas
+      if (!isExist) {
+        // 为商品新增属性
+        // isCheck: 表示商品是否选中
+        // number: 表示商品的数量
+        // 通过 Vue.set 的方法可以把新添加的属性变为响应式的数据。
+        // 如果直接通过 goods.isCheck = false; 那么 isCheck 就不是响应式的数据
+        Vue.set(goods, 'isCheck', false)
+        Vue.set(goods, 'number', 1)
+        state.shoppingDatas.push(goods)
+      }
     },
     /**
      * 更改指定的商品数量
