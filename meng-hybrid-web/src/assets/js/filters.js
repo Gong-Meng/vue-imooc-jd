@@ -7,7 +7,7 @@ import Vue from 'vue'
 Vue.filter('priceValue', function (value) {
   // 如果文本不存在，返回空字符
   if (!value) {
-    return ''
+    return '0.00'
   }
 
   // 文本转化为 float

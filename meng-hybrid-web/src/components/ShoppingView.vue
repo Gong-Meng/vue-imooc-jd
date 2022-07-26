@@ -21,29 +21,216 @@
    -->
   <div class="shopping">
     <navigation-bar :page-name="'购物车'" :is-show-back="false"></navigation-bar>
-    <h1>Shipping</h1>
+
+    <div class="shopping-content">
+      <div class="shopping-content-list">
+          <!-- 商品 -->
+          <div class="shopping-content-list-item"
+            v-for="(item, index) in shoppingDatas" :key="index"
+          >
+            <!-- check -->
+            <img class="shopping-content-list-item-check" src="@img/no-check.svg" alt="">
+            <!-- 图片 -->
+            <img class="shopping-content-list-item-img" :src="item.img" alt="">
+            <!-- 描述 -->
+            <div class="shopping-content-list-item-desc">
+              <!-- 名称 -->
+              <p class="shopping-content-list-item-desc-name text-line-2">
+                <!-- 直营 -->
+                <direct v-if="item.isDirect"></direct>
+                {{item.name}}
+              </p>
+
+              <div class="shopping-content-list-item-desc-data">
+                <!-- 价格 -->
+                <p class="shopping-content-list-item-desc-data-price">￥{{item.price | priceValue}}</p>
+                <!-- 商品数量控制组件 -->
+              </div>
+            </div>
+          </div>
+      </div>
+      <!-- 统计 -->
+      <div class="shopping-content-total">
+        <!-- 全选的check -->
+        <div class="shopping-content-total-check">
+          <img src="@img/no-check.svg" alt="">
+          <p>全选</p>
+        </div>
+
+        <!-- 总价格 -->
+        <div class="shopping-content-total-price">
+          <p class="shopping-content-total-price-total">合计：<span>￥{{totalData.totalPrice | priceValue}}</span></p>
+          <p class="shopping-content-total-price-all">总额：
+            <span>￥{{totalData.totalPrice | priceValue}}</span>
+            &nbsp;&nbsp;
+            立减<span>￥0.00</span>
+          </p>
+        </div>
+
+        <!-- 结算 -->
+        <div class="shopping-content-total-commit">
+          去结算{{totalData.goodsNumber}}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import NavigationBar from '@c/currency/NavigationBarView.vue'
+import Direct from './goods/DirectView.vue'
 
 export default {
   components: {
-    NavigationBar
+    NavigationBar,
+    Direct
   },
   data () {
     return {
-      shoppingDatas: this.$store.state.shoppingDatas
+      // 购物车商品
+      shoppingDatas: this.$store.state.shoppingDatas,
+      // 总计
+      totalData: {
+        // 是否全选
+        isAll: false,
+        // 总价格
+        totalPrice: 0,
+        // 总数量
+        goodsNumber: 0
+      }
     }
   }
 }
 
 </script>
 <style lang="scss" scoped>
+@import '@css/style.scss';
 .shopping{
   width: 100%;
   height: 100%;
-  font-size: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column; // flex-direction flex-wrap 复合属性
+
+  &-content{
+    background-color: $bgColor;
+    border-top: px2rem(1) solid $lineColor;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    // 商品列表
+    &-list{
+      height: 100%;
+      overflow: hidden;
+      overflow-y: auto;
+
+      &-item{
+        background-color: white;
+        padding: $marginSize;
+        display: flex;
+        border-bottom: px2rem(1) solid $lineColor;
+
+        &-check{
+          width: $checkSize;
+          // height: $checkSize;
+          align-self: center;
+          padding: px2rem(6);
+        }
+
+        &-img{
+          width: $listGoodsImgSize;
+          height: $listGoodsImgSize;
+        }
+
+        &-desc{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 0 $marginSize;
+
+          &-name{
+            font-size: $infoSize;
+            line-height: px2rem(18);
+          }
+
+          &-data{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: $marginSize;
+
+            &-price{
+              font-size: $titleSize;
+              color: $mainColor;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    // 总计
+    &-total {
+      height: px2rem(56);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-top: px2rem(1) solid $lineColor;
+
+      &-check{
+        display: flex;
+        align-items: center;
+        margin: 0 $marginSize;
+
+        img{
+          width: $checkSize;
+          height: $checkSize;
+          padding: px2rem(6);
+        }
+
+        p{
+          font-size: $infoSize;
+        }
+      }
+
+      &-price{
+        flex-grow: 2;
+        display: flex;
+        flex-direction: column;
+
+        &-total{
+          font-size: $titleSize;
+          margin-bottom: px2rem(6);
+
+          span{
+            font-weight: bold;
+          }
+        }
+
+        &-all{
+          font-size: $minInfoSize;
+          span{
+            font-weight: bold;
+          }
+        }
+      }
+
+      &-commit{
+        width: px2rem(120);
+        height: 100%;
+        font-size: $titleSize;
+        background-color: $mainColor;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
 }
 </style>
